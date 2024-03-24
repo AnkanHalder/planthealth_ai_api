@@ -10,7 +10,7 @@ load_dotenv('.env')
 app = Flask(__name__)
 UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
-CORS(app)
+CORS(app, origins="*")
 
 
 def get_predictions(image_file):
