@@ -1,2 +1,3 @@
 gradio-client
 flask
+flask_cors
