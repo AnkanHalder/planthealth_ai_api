@@ -61,4 +61,3 @@ def predict_image():
         return jsonify({'error': 'Method Not Allowed'}), 405  # Method Not Allowed
 
 
-app.run()
