@@ -3,9 +3,9 @@ from flask_cors import CORS
 from gradio_client import Client,file
 from werkzeug.utils import secure_filename
 import os
+from dotenv import load_dotenv
 
-app = Flask(__name__)
-
+load_dotenv('.env')
 
 app = Flask(__name__)
 UPLOAD_FOLDER = './uploads'
@@ -14,7 +14,7 @@ CORS(app)
 
 
 def get_predictions(image_file):
-    client = Client("midknight2002/happy_leaf")
+    client = Client("midknight2002/happy_leaf",hf_token=os.environ.get('HUGGINGFACE_TOKEN'))
     print("CLIENT LOADED")
     result = client.predict(
         file(image_file),
@@ -22,7 +22,11 @@ def get_predictions(image_file):
     )
     print("PREDICTION MADE")
     print(result)
-    return result
+    return {
+            "type" : result[0],
+            "disease" : result[1],
+            "cure": result[2]
+    }
 
 
 
@@ -48,14 +52,13 @@ def predict_image():
         filename = secure_filename(image_file.filename)
         path_ = os.path.join(app.config["UPLOAD_FOLDER"], filename )
         image_file.save(path_)
-        p=get_predictions(path_)
-        print(p)
+        res=get_predictions(path_)
         os.remove(path_)
 
-        return jsonify({'success': True }), 200  # OK
+        return jsonify({'success': True , "predictions" : res }), 200  # OK
 
     else:
         return jsonify({'error': 'Method Not Allowed'}), 405  # Method Not Allowed
 
 
-app.run(debug=True)
+app.run()

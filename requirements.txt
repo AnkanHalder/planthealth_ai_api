@@ -1,3 +1,4 @@
 gradio-client
 flask
 flask_cors
+python-dotenv
