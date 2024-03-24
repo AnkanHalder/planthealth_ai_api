@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv('.env')
 
 app = Flask(__name__)
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = '/tmp/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 CORS(app, origins="*")
 
